@@ -1,5 +1,5 @@
 name: 'Move to next iteration'
-description: 'Automatically move issues to the next iteration'
+description: 'Automatically move issues to the next iteration.'
 author: 'Baptiste Lombard'
 branding:
   icon: 'calendar'

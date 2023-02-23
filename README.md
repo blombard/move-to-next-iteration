@@ -54,4 +54,4 @@ jobs:
 
 ## Sources
 
-This action was made possible thanks to https://github.com/gr2m/github-project
+This action was made possible thanks to https://github.com/gr2m/github-project.
