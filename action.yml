@@ -1,0 +1,10 @@
+name: 'Move to next iteration'
+description: 'Automatically move issues to next iteration'
+author: 'Baptiste Lombard'
+branding:
+  icon: 'calendar'
+  color: 'blue'
+# inputs:
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
