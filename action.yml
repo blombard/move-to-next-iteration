@@ -1,10 +1,31 @@
 name: 'Move to next iteration'
-description: 'Automatically move issues to next iteration'
+description: 'Automatically move issues to the next iteration'
 author: 'Baptiste Lombard'
 branding:
   icon: 'calendar'
   color: 'blue'
-# inputs:
+inputs:
+  owner:
+    description: The account name of the GitHub organization.
+    required: true
+  number:
+    description: Project number as you see it in the URL of the project.
+    required: true
+  token:
+    description: Personal access token or an OAuth token. the write:org scope is required for read-write access.
+    required: true
+  iteration-field:
+    description: The name of your iteration field.
+    required: true
+  iteration:
+    description: Should be last or current.
+    required: true
+  new-iteration:
+    description: Should be current or next.
+    required: true
+  statuses:
+    description: Statuses of the issues to move to the next iteration.
+    required: true
 runs:
   using: 'node16'
   main: 'dist/index.js'

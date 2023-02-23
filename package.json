@@ -1,11 +1,9 @@
 {
   "name": "move-to-next-iteration",
   "version": "0.1.0",
-  "description": "Automatically move issues to next iteration",
+  "description": "Automatically move issues to the next iteration",
   "main": "dist/index.js",
   "scripts": {
-    "coverage": "jest --coverage",
-    "test": "jest --coverage --verbose",
     "build": "ncc build index.js"
   },
   "author": "Baptiste Lombard",
