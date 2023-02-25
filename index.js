@@ -22,6 +22,8 @@ const run = async () => {
 
     const items = await project.items.list();
     const filteredItems = items.filter(item => statuses.includes(item.fields.status) && item.fields.iteration === iteration.title);
+    console.log(filteredItems);
+    console.log({ newIteration });
     await Promise.all(filteredItems.map(item => project.items.update(item.id, { iteration: newIteration.title })));
   } catch (error) {
     core.setFailed(error.message);
