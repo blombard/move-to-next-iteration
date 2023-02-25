@@ -1,3 +1,4 @@
+const core = require('@actions/core');
 const GitHubProject = require("github-project");
 
 const run = async () => {
