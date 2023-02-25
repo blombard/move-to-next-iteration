@@ -7162,7 +7162,9 @@ const run = async () => {
     const iterationField = core.getInput('iteration-field'); // name of the iteration field
     const iterationType = core.getInput('iteration'); // last or current
     const newiterationType = core.getInput('new-iteration'); // current or next
-    const statuses = core.getInput('statuses');
+    const statuses = core.getInput('statuses').split(',');
+
+    console.log({ owner, number, iterationField, iterationType, newiterationType, statuses });
 
     const project = new GitHubProject({ owner, number, token, fields: { iteration: iterationField } });
 
@@ -7176,6 +7178,8 @@ const run = async () => {
 
     const items = await project.items.list();
     const filteredItems = items.filter(item => statuses.includes(item.fields.status) && item.fields.iteration === iteration.title);
+    console.log(filteredItems);
+    console.log({ newIteration });
     await Promise.all(filteredItems.map(item => project.items.update(item.id, { iteration: newIteration.title })));
   } catch (error) {
     core.setFailed(error.message);

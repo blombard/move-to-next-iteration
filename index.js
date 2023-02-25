@@ -10,6 +10,8 @@ const run = async () => {
     const newiterationType = core.getInput('new-iteration'); // current or next
     const statuses = core.getInput('statuses').split(',');
 
+    console.log({ owner, number, iterationField, iterationType, newiterationType, statuses });
+
     const project = new GitHubProject({ owner, number, token, fields: { iteration: iterationField } });
 
     const projectData = await project.getProperties();
