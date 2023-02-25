@@ -1,5 +1,5 @@
-const core = require('@actions/core');
-const GitHubProject = require("github-project");
+import core from '@actions/core';
+import GitHubProject from 'github-project';
 
 const run = async () => {
   try {
@@ -33,8 +33,4 @@ const run = async () => {
   }
 };
 
-if (require.main === module) {
-  run();
-}
-
-module.exports = run;
+run();
