@@ -8585,52 +8585,52 @@ function projectFieldValueNodeToValue(projectField, node) {
 function projectItemNodeToGitHubProjectItem(state, itemNode) {
   const fields = itemFieldsNodesToFieldsMap(state, itemNode.fieldValues.nodes);
 
-  const common = {
-    type: itemNode.type,
-    id: itemNode.id,
-    isArchived: itemNode.isArchived,
-    fields,
-  };
+  // const common = {
+  //   type: itemNode.type,
+  //   id: itemNode.id,
+  //   isArchived: itemNode.isArchived,
+  //   fields,
+  // };
 
-  if (itemNode.type === "DRAFT_ISSUE") {
-    return {
-      ...common,
-      content: {
-        id: itemNode.content.id,
-        title: itemNode.content.title,
-        createdAt: itemNode.content.createdAt,
-        assignees: itemNode.content.assignees.nodes.map((node) => node.login),
-      },
-    };
-  }
+  // if (itemNode.type === "DRAFT_ISSUE") {
+  //   return {
+  //     ...common,
+  //     content: {
+  //       id: itemNode.content.id,
+  //       title: itemNode.content.title,
+  //       createdAt: itemNode.content.createdAt,
+  //       assignees: itemNode.content.assignees.nodes.map((node) => node.login),
+  //     },
+  //   };
+  // }
 
-  if (itemNode.type === "ISSUE" || itemNode.type === "PULL_REQUEST") {
-    // item is issue or pull request
-    const issue = {
-      id: itemNode.content.id,
-      number: itemNode.content.number,
-      createdAt: itemNode.content.createdAt,
-      closed: itemNode.content.closed,
-      closedAt: itemNode.content.closedAt,
-      assignees: itemNode.content.assignees.nodes.map((node) => node.login),
-      labels: itemNode.content.labels.nodes.map((node) => node.name),
-      repository: itemNode.content.repository.name,
-      milestone: itemNode.content.milestone,
-      title: itemNode.content.title,
-      url: itemNode.content.url,
-      databaseId: itemNode.content.databaseId,
-    };
+  // if (itemNode.type === "ISSUE" || itemNode.type === "PULL_REQUEST") {
+  //   // item is issue or pull request
+  //   const issue = {
+  //     id: itemNode.content.id,
+  //     number: itemNode.content.number,
+  //     createdAt: itemNode.content.createdAt,
+  //     closed: itemNode.content.closed,
+  //     closedAt: itemNode.content.closedAt,
+  //     assignees: itemNode.content.assignees.nodes.map((node) => node.login),
+  //     labels: itemNode.content.labels.nodes.map((node) => node.name),
+  //     repository: itemNode.content.repository.name,
+  //     milestone: itemNode.content.milestone,
+  //     title: itemNode.content.title,
+  //     url: itemNode.content.url,
+  //     databaseId: itemNode.content.databaseId,
+  //   };
 
-    const content =
-      itemNode.type === "ISSUE"
-        ? issue
-        : { ...issue, merged: itemNode.content.merged };
+  //   const content =
+  //     itemNode.type === "ISSUE"
+  //       ? issue
+  //       : { ...issue, merged: itemNode.content.merged };
 
-    return {
-      ...common,
-      content,
-    };
-  }
+  //   return {
+  //     ...common,
+  //     content,
+  //   };
+  // }
   /* c8 ignore next 9 */
 
   // fallback: no content properties are set. Currently that's in case of "REDACTED"
@@ -9829,8 +9829,6 @@ const run = async () => {
 
     const projectData = await project.getProperties();
 
-    console.log({ projectData });
-
     const lastIteration = projectData.fields.iteration.configuration.completedIterations[0];
     const currentIteration = projectData.fields.iteration.configuration.iterations[0];
     const nextIteration = projectData.fields.iteration.configuration.iterations[1];
@@ -9838,16 +9836,10 @@ const run = async () => {
     const iteration = iterationType === 'last' ? lastIteration : currentIteration;
     const newIteration = newiterationType === 'current' ? currentIteration : nextIteration;
 
-    console.log({ iteration, newIteration });
-
     const items = await project.items.list();
-
-    console.log(items);
 
     const filteredItems = items.filter(item => statuses.includes(item.fields.status) && item.fields.iteration === iteration.title);
 
-    console.log(filteredItems);
-    console.log({ newIteration });
     await Promise.all(filteredItems.map(item => project.items.update(item.id, { iteration: newIteration.title })));
   } catch (error) {
     core.setFailed(error.message);

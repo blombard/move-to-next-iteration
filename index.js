@@ -15,8 +15,6 @@ const run = async () => {
 
     const projectData = await project.getProperties();
 
-    console.log({ projectData });
-
     const lastIteration = projectData.fields.iteration.configuration.completedIterations[0];
     const currentIteration = projectData.fields.iteration.configuration.iterations[0];
     const nextIteration = projectData.fields.iteration.configuration.iterations[1];
@@ -24,16 +22,10 @@ const run = async () => {
     const iteration = iterationType === 'last' ? lastIteration : currentIteration;
     const newIteration = newiterationType === 'current' ? currentIteration : nextIteration;
 
-    console.log({ iteration, newIteration });
-
     const items = await project.items.list();
-
-    console.log(items);
 
     const filteredItems = items.filter(item => statuses.includes(item.fields.status) && item.fields.iteration === iteration.title);
 
-    console.log(filteredItems);
-    console.log({ newIteration });
     await Promise.all(filteredItems.map(item => project.items.update(item.id, { iteration: newIteration.title })));
   } catch (error) {
     core.setFailed(error.message);
