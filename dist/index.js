@@ -9818,14 +9818,12 @@ class GitHubProject {
 const run = async () => {
   try {
     const owner = core.getInput('owner');
-    const number = core.getInput('number');
+    const number = Number(core.getInput('number'));
     const token = core.getInput('token');
     const iterationField = core.getInput('iteration-field'); // name of the iteration field
     const iterationType = core.getInput('iteration'); // last or current
     const newiterationType = core.getInput('new-iteration'); // current or next
     const statuses = core.getInput('statuses').split(',');
-
-    console.log({ owner, number, iterationField, iterationType, newiterationType, statuses });
 
     const project = new GitHubProject({ owner, number, token, fields: { iteration: iterationField } });
 
