@@ -11,8 +11,6 @@ const run = async () => {
     const newiterationType = core.getInput('new-iteration'); // current or next
     const statuses = core.getInput('statuses').split(',');
 
-    console.log({ owner, number, iterationField, iterationType, newiterationType, statuses });
-
     const project = new GitHubProject({ owner, number, token, fields: { iteration: iterationField } });
 
     const projectData = await project.getProperties();
@@ -26,8 +24,14 @@ const run = async () => {
     const iteration = iterationType === 'last' ? lastIteration : currentIteration;
     const newIteration = newiterationType === 'current' ? currentIteration : nextIteration;
 
+    console.log({ iteration, newIteration });
+
     const items = await project.items.list();
+
+    console.log(items);
+
     const filteredItems = items.filter(item => statuses.includes(item.fields.status) && item.fields.iteration === iteration.title);
+
     console.log(filteredItems);
     console.log({ newIteration });
     await Promise.all(filteredItems.map(item => project.items.update(item.id, { iteration: newIteration.title })));
