@@ -9825,9 +9825,14 @@ const run = async () => {
     const newiterationType = core.getInput('new-iteration'); // current or next
     const statuses = core.getInput('statuses').split(',');
 
+    console.log({ owner, number, iterationField, iterationType, newiterationType, statuses });
+
     const project = new GitHubProject({ owner, number, token, fields: { iteration: iterationField } });
 
     const projectData = await project.getProperties();
+
+    console.log({ projectData });
+
     const lastIteration = projectData.fields.iteration.configuration.completedIterations[0];
     const currentIteration = projectData.fields.iteration.configuration.iterations[0];
     const nextIteration = projectData.fields.iteration.configuration.iterations[1];
