@@ -31,3 +31,9 @@ const run = async () => {
     core.setFailed(error.message);
   }
 };
+
+if (require.main === module) {
+  run();
+}
+
+module.exports = run;

@@ -1,6 +1,52 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 932:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+const GitHubProject = __nccwpck_require__(376);
+
+const run = async () => {
+  try {
+    const owner = core.getInput('owner');
+    const number = core.getInput('number');
+    const token = core.getInput('token');
+    const iterationField = core.getInput('iteration-field'); // name of the iteration field
+    const iterationType = core.getInput('iteration'); // last or current
+    const newiterationType = core.getInput('new-iteration'); // current or next
+    const statuses = core.getInput('statuses').split(',');
+
+    console.log({ owner, number, iterationField, iterationType, newiterationType, statuses });
+
+    const project = new GitHubProject({ owner, number, token, fields: { iteration: iterationField } });
+
+    const projectData = await project.getProperties();
+    const lastIteration = projectData.fields.iteration.configuration.completedIterations[0];
+    const currentIteration = projectData.fields.iteration.configuration.iterations[0];
+    const nextIteration = projectData.fields.iteration.configuration.iterations[1];
+
+    const iteration = iterationType === 'last' ? lastIteration : currentIteration;
+    const newIteration = newiterationType === 'current' ? currentIteration : nextIteration;
+
+    const items = await project.items.list();
+    const filteredItems = items.filter(item => statuses.includes(item.fields.status) && item.fields.iteration === iteration.title);
+    console.log(filteredItems);
+    console.log({ newIteration });
+    await Promise.all(filteredItems.map(item => project.items.update(item.id, { iteration: newIteration.title })));
+  } catch (error) {
+    core.setFailed(error.message);
+  }
+};
+
+if (require.main === require.cache[eval('__filename')]) {
+  run();
+}
+
+module.exports = run;
+
+
+/***/ }),
+
 /***/ 334:
 /***/ ((__unused_webpack_module, exports) => {
 
@@ -7149,45 +7195,12 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
-const GitHubProject = __nccwpck_require__(376);
-
-const run = async () => {
-  try {
-    const owner = core.getInput('owner');
-    const number = core.getInput('number');
-    const token = core.getInput('token');
-    const iterationField = core.getInput('iteration-field'); // name of the iteration field
-    const iterationType = core.getInput('iteration'); // last or current
-    const newiterationType = core.getInput('new-iteration'); // current or next
-    const statuses = core.getInput('statuses').split(',');
-
-    console.log({ owner, number, iterationField, iterationType, newiterationType, statuses });
-
-    const project = new GitHubProject({ owner, number, token, fields: { iteration: iterationField } });
-
-    const projectData = await project.getProperties();
-    const lastIteration = projectData.fields.iteration.configuration.completedIterations[0];
-    const currentIteration = projectData.fields.iteration.configuration.iterations[0];
-    const nextIteration = projectData.fields.iteration.configuration.iterations[1];
-
-    const iteration = iterationType === 'last' ? lastIteration : currentIteration;
-    const newIteration = newiterationType === 'current' ? currentIteration : nextIteration;
-
-    const items = await project.items.list();
-    const filteredItems = items.filter(item => statuses.includes(item.fields.status) && item.fields.iteration === iteration.title);
-    console.log(filteredItems);
-    console.log({ newIteration });
-    await Promise.all(filteredItems.map(item => project.items.update(item.id, { iteration: newIteration.title })));
-  } catch (error) {
-    core.setFailed(error.message);
-  }
-};
-
-})();
-
-module.exports = __webpack_exports__;
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __nccwpck_require__(932);
+/******/ 	module.exports = __webpack_exports__;
+/******/ 	
 /******/ })()
 ;
