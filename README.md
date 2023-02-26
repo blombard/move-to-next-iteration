@@ -29,8 +29,8 @@ Statuses of the issues to move to the next iteration.
 ```yml
 on:
   schedule:
-    # Runs "at 23:00, only on Sunday" (see https://crontab.guru)
-    - cron: '0 23 * * 0'
+    # Runs "at 01:00, only on Monday" (see https://crontab.guru)
+    - cron: '0 1 * * 1'
 
 jobs:
   move-to-next-iteration:
@@ -47,9 +47,9 @@ jobs:
         number: 1
         token: ${{ secrets.PROJECT_PAT }}
         iteration-field: Iteration
-        iteration: current
-        new-iteration: next
-        statuses: Todo,In Progress,In Review,Done
+        iteration: last
+        new-iteration: current
+        statuses: Todo,In Progress,In Review
 ```
 
 ## Sources
