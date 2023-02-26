@@ -1,28 +1,6 @@
 # Move to next iteration
 
-Automatically move issues to the next iteration with this [Github Action](https://github.com/features/actions).
-
-## Inputs
-#### owner
-The account name of the GitHub organization.
-
-#### number
-Project number as you see it in the URL of the project.
-
-#### token
-Personal access token or an OAuth token. the `write:org` scope is required for read-write access.
-
-#### iteration-field
-The name of your iteration field.
-
-#### iteration
-Should be `last` or `current`.
-
-#### new-iteration
-Should be `current` or `next`.
-
-#### statuses
-Statuses of the issues to move to the next iteration.
+Automatically move issues and pull requests to the next iteration of your [GitHub project](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects) with this [Github Action](https://github.com/features/actions).
 
 ## Example
 
@@ -51,6 +29,28 @@ jobs:
         new-iteration: current
         statuses: Todo,In Progress,In Review
 ```
+
+## Inputs
+#### owner
+The account name of the GitHub organization.
+
+#### number
+Project number as you see it in the URL of the project.
+
+#### token
+Personal access token or an OAuth token. the `project` scope is required.
+
+#### iteration-field
+The name of your iteration field.
+
+#### iteration
+Should be `last` or `current`.
+
+#### new-iteration
+Should be `current` or `next`.
+
+#### statuses
+Statuses of the issues to move to the next iteration.
 
 ## Sources
 
