@@ -16,9 +16,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-
     - uses: blombard/move-to-next-iteration@master
       with:
         owner: OrgName
