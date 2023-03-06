@@ -7,8 +7,8 @@ Automatically move issues and pull requests to the next iteration of your [GitHu
 ```yml
 on:
   schedule:
-    # Runs "at 01:00, only on Monday" (see https://crontab.guru)
-    - cron: '0 1 * * 1'
+    # Runs "at 05:00, only on Monday" (see https://crontab.guru)
+    - cron: '0 5 * * 1'
 
 jobs:
   move-to-next-iteration:
@@ -17,7 +17,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - uses: blombard/move-to-next-iteration@master
       with:
