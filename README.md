@@ -49,6 +49,8 @@ Should be `current` or `next`.
 #### statuses
 Statuses of the issues to move to the next iteration.
 
+⚠️ _Don't put an empty string after a comma unless the status starts with an empty string._ ⚠️
+
 ## Sources
 
 This action was made possible thanks to https://github.com/gr2m/github-project.
