@@ -25,7 +25,10 @@ inputs:
     required: true
   statuses:
     description: Statuses of the issues to move to the next iteration.
-    required: true
+    required: false
+  excluded-statuses:
+    description: Statuses of the issues that should not be moved. This setting takes precedence over statuses.
+    required: false
 runs:
   using: 'node16'
   main: 'dist/index.js'
