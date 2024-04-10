@@ -1,0 +1,28 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    open-pull-requests-limit: 20
+    schedule:
+      interval: weekly
+      day: friday
+      time: "04:00"
+    groups:
+      github-actions-dependencies:
+        patterns:
+          - "*"
+
+  - package-ecosystem: npm
+    directory: "/"
+    open-pull-requests-limit: 20
+    versioning-strategy: widen
+    schedule:
+      interval: weekly
+      day: friday
+      time: "04:00"
+    groups:
+      actions-dependencies:
+        patterns:
+          - "@actions/*"
+      npm-dev-dependencies:
+        dependency-type: development

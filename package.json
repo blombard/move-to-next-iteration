@@ -11,7 +11,7 @@
   "type": "module",
   "dependencies": {
     "@actions/core": "^1.10.0",
-    "github-project": "github:blombard/github-project"
+    "github-project": "^5.4.1"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.36.1"
