@@ -29651,15 +29651,9 @@ const run = async () => {
     const newiterationType = core.getInput("new-iteration"); // current or next
     const statuses = core.getInput("statuses").split(",");
     const coreExclusedStatuses = core.getInput("excluded-statuses");
-    const excludedStatuses = coreExclusedStatuses
-      ? coreExclusedStatuses.split(",")
-      : [];
+    const excludedStatuses = coreExclusedStatuses ? coreExclusedStatuses.split(",") : [];
 
-    const project = new GitHubProject({
-      owner,
-      number,
-      token,
-    });
+    const project = new GitHubProject({ owner, number, token });
 
     const items = await project.items.list();
     core.debug(`items: ${JSON.stringify(items)}`);
@@ -29672,34 +29666,25 @@ const run = async () => {
 
     const projectIterationField = project.fields.iteration;
 
-    core.debug(
-      `project iteration field: ${JSON.stringify(projectIterationField)}`
-    );
+    core.debug(`project iteration field: ${JSON.stringify(projectIterationField)}`);
 
-    const lastIteration =
-      projectIterationField.configuration.completedIterations[0];
+    const lastIteration = projectIterationField.configuration.completedIterations[0];
     const currentIteration = projectIterationField.configuration.iterations[0];
     const nextIteration = projectIterationField.configuration.iterations[1];
 
-    const iteration =
-      iterationType === "last" ? lastIteration : currentIteration;
+    const iteration = iterationType === "last" ? lastIteration : currentIteration;
 
     if (!iteration) {
-      core.setFailed(
-        `No ${iterationType} iteration found. Check if the iteration exists.`
-      );
+      core.setFailed(`No ${iterationType} iteration found. Check if the iteration exists.`);
       return;
     }
 
     core.debug(`iteration: ${iteration.title}`);
 
-    const newIteration =
-      newiterationType === "current" ? currentIteration : nextIteration;
+    const newIteration = newiterationType === "current" ? currentIteration : nextIteration;
 
     if (!newIteration) {
-      core.setFailed(
-        `No ${newiterationType} iteration found. Check if the iteration exists.`
-      );
+      core.setFailed(`No ${newiterationType} iteration found. Check if the iteration exists.`);
       return;
     }
 
@@ -29719,9 +29704,7 @@ const run = async () => {
     });
 
     await Promise.all(
-      filteredItems.map((item) =>
-        project.items.update(item.id, { iteration: newIteration.title })
-      )
+      filteredItems.map((item) => project.items.update(item.id, { iteration: newIteration.title }))
     );
   } catch (error) {
     core.setFailed(error);
