@@ -1,9 +1,9 @@
-name: 'Move to next iteration'
-description: 'Automatically move issues to the next iteration.'
-author: 'Baptiste Lombard'
+name: "Move to next iteration"
+description: "Automatically move issues to the next iteration."
+author: "Baptiste Lombard"
 branding:
-  icon: 'calendar'
-  color: 'blue'
+  icon: "calendar"
+  color: "blue"
 inputs:
   owner:
     description: The account name of the GitHub organization.
@@ -30,5 +30,5 @@ inputs:
     description: Statuses of the issues that should not be moved. This setting takes precedence over statuses.
     required: false
 runs:
-  using: 'node16'
-  main: 'dist/index.js'
+  using: "node20"
+  main: "dist/index.js"

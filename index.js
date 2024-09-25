@@ -1,32 +1,71 @@
-import core from '@actions/core';
-import GitHubProject from 'github-project';
+import core from "@actions/core";
+import GitHubProject from "github-project";
 
 const run = async () => {
   try {
-    const owner = core.getInput('owner');
-    const number = Number(core.getInput('number'));
-    const token = core.getInput('token');
-    const iterationField = core.getInput('iteration-field'); // name of the iteration field
-    const iterationType = core.getInput('iteration'); // last or current
-    const newiterationType = core.getInput('new-iteration'); // current or next
-    const statuses = core.getInput('statuses').split(',');
-    const coreExclusedStatuses = core.getInput('excluded-statuses');
-    const excludedStatuses = coreExclusedStatuses ? coreExclusedStatuses.split(',') : [];
+    const owner = core.getInput("owner");
+    const number = Number(core.getInput("number"));
+    const token = core.getInput("token");
+    const iterationField = core.getInput("iteration-field"); // name of the iteration field
+    const iterationType = core.getInput("iteration"); // last or current
+    const newiterationType = core.getInput("new-iteration"); // current or next
+    const statuses = core.getInput("statuses").split(",");
+    const coreExclusedStatuses = core.getInput("excluded-statuses");
+    const excludedStatuses = coreExclusedStatuses
+      ? coreExclusedStatuses.split(",")
+      : [];
 
-    const project = new GitHubProject({ owner, number, token, fields: { iteration: iterationField } });
-
-    const projectData = await project.getProperties();
-
-    const lastIteration = projectData.fields.iteration.configuration.completedIterations[0];
-    const currentIteration = projectData.fields.iteration.configuration.iterations[0];
-    const nextIteration = projectData.fields.iteration.configuration.iterations[1];
-
-    const iteration = iterationType === 'last' ? lastIteration : currentIteration;
-    const newIteration = newiterationType === 'current' ? currentIteration : nextIteration;
+    const project = new GitHubProject({
+      owner,
+      number,
+      token,
+    });
 
     const items = await project.items.list();
+    core.debug(`items: ${JSON.stringify(items)}`);
 
-    const filteredItems = items.filter(item => {
+    if (!project.fields) {
+      core.setFailed(`No iteration field found with name ${iterationField}`);
+      return;
+    }
+    core.debug(`project fields: ${JSON.stringify(project.fields)}`);
+
+    const projectIterationField = project.fields.iteration;
+
+    core.debug(
+      `project iteration field: ${JSON.stringify(projectIterationField)}`
+    );
+
+    const lastIteration =
+      projectIterationField.configuration.completedIterations[0];
+    const currentIteration = projectIterationField.configuration.iterations[0];
+    const nextIteration = projectIterationField.configuration.iterations[1];
+
+    const iteration =
+      iterationType === "last" ? lastIteration : currentIteration;
+
+    if (!iteration) {
+      core.setFailed(
+        `No ${iterationType} iteration found. Check if the iteration exists.`
+      );
+      return;
+    }
+
+    core.debug(`iteration: ${iteration.title}`);
+
+    const newIteration =
+      newiterationType === "current" ? currentIteration : nextIteration;
+
+    if (!newIteration) {
+      core.setFailed(
+        `No ${newiterationType} iteration found. Check if the iteration exists.`
+      );
+      return;
+    }
+
+    core.debug(`newIteration: ${newIteration.title}`);
+
+    const filteredItems = items.filter((item) => {
       // If item is not in the old iteration, return false.
       if (item.fields.iteration !== iteration.title) return false;
       // If excludedStatuses are supplied, use that. Otherwise, use statuses.
@@ -39,9 +78,13 @@ const run = async () => {
       }
     });
 
-    await Promise.all(filteredItems.map(item => project.items.update(item.id, { iteration: newIteration.title })));
+    await Promise.all(
+      filteredItems.map((item) =>
+        project.items.update(item.id, { iteration: newIteration.title })
+      )
+    );
   } catch (error) {
-    core.setFailed(error.message);
+    core.setFailed(error);
   }
 };
 
