@@ -13,10 +13,12 @@ const run = async () => {
     const coreExclusedStatuses = core.getInput("excluded-statuses");
     const excludedStatuses = coreExclusedStatuses ? coreExclusedStatuses.split(",") : [];
 
-    const project = new GitHubProject({ owner, number, token });
+    const ghProject = new GitHubProject({ owner, number, token, fields: { iteration: iterationField } });
 
-    const items = await project.items.list();
+    const items = await ghProject.items.list();
     core.debug(`items: ${JSON.stringify(items)}`);
+
+    const project = await ghProject.getProperties();
 
     if (!project.fields) {
       core.setFailed(`No iteration field found with name ${iterationField}`);
@@ -64,7 +66,7 @@ const run = async () => {
     });
 
     await Promise.all(
-      filteredItems.map((item) => project.items.update(item.id, { iteration: newIteration.title }))
+      filteredItems.map((item) => ghProject.items.update(item.id, { iteration: newIteration.title }))
     );
   } catch (error) {
     core.setFailed(error);
