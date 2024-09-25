@@ -28201,6 +28201,7 @@ function projectFieldsNodesToFieldsMap(state, project, nodes) {
           },
           {}
         );
+        acc[userFieldNameAlias].configuration = node.configuration;
       }
 
       return acc;
@@ -29397,6 +29398,7 @@ async function removeItemByContentRepositoryAndNumber(
 function projectNodeToProperties(state) {
   return {
     databaseId: state.databaseId,
+    fields: state.fields,
     id: state.id,
     title: state.title,
     url: state.url,
