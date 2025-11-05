@@ -61,6 +61,9 @@ Project number as you see it in the URL of the project.
 
 #### token
 Personal access token or an OAuth token. the `project` scope is required.
+> [!IMPORTANT]
+> Personal access token must be classic token. Do not use fine grined token.
+> Permissions you should add are `repo` (all) and `project:read` (only one)
 
 #### iteration-field
 The name of your iteration field.
