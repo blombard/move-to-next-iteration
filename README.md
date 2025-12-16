@@ -18,7 +18,7 @@ jobs:
     steps:
     - uses: joeito/move-to-next-iteration@master
       with:
-        api_
+        api-url: "https://ghe.example.com/api/v3" # GitHub Enterprise Server users only
         owner: OrgName
         number: 1
         token: ${{ secrets.PROJECT_PAT }}
