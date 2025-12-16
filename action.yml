@@ -5,6 +5,10 @@ branding:
   icon: "calendar"
   color: "blue"
 inputs:
+  api-url:
+    description: "Base URL of the GitHub API (e.g. https://ghe.example.com/api/v3)"
+    required: false
+    default: ""
   owner:
     description: The account name of the GitHub organization.
     required: true
