@@ -1,8 +1,12 @@
 import core from "@actions/core";
 import GitHubProject from "github-project";
+import { Octokit } from "@octokit/rest";
+
+
 
 const run = async () => {
   try {
+    const apiUrlInput = core.getInput("api-url");
     const owner = core.getInput("owner");
     const number = Number(core.getInput("number"));
     const token = core.getInput("token");
@@ -13,7 +17,17 @@ const run = async () => {
     const coreExclusedStatuses = core.getInput("excluded-statuses");
     const excludedStatuses = coreExclusedStatuses ? coreExclusedStatuses.split(",") : [];
 
-    const ghProject = new GitHubProject({ owner, number, token, fields: { iteration: iterationField } });
+    const baseUrl = apiUrlInput  || "https://api.github.com" 
+    const octokit = new Octokit({
+      auth: token,
+      baseUrl,
+    });
+    const ghProject = new GitHubProject({
+      owner,
+      number,
+      octokit,
+      fields: { iteration: iterationField }
+    });
 
     const items = await ghProject.items.list();
     core.debug(`items: ${JSON.stringify(items)}`);
