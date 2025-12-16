@@ -18,6 +18,7 @@ jobs:
     steps:
     - uses: joeito/move-to-next-iteration@master
       with:
+        api_
         owner: OrgName
         number: 1
         token: ${{ secrets.PROJECT_PAT }}
@@ -43,6 +44,7 @@ jobs:
     steps:
     - uses: joeito/move-to-next-iteration@master
       with:
+        api-url: "https://ghe.example.com/api/v3" # GitHub Enterprise Server users only
         owner: OrgName
         number: 1
         token: ${{ secrets.PROJECT_PAT }}
@@ -53,6 +55,9 @@ jobs:
 ```
 
 ## Inputs
+#### api-url
+Custom GitHub API base URL (required for GHES).
+
 #### owner
 The account name of the GitHub organization.
 
