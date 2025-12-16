@@ -6,6 +6,7 @@ import { Octokit } from "@octokit/rest";
 
 const run = async () => {
   try {
+    const apiUrlInput = core.getInput("api-url");
     const owner = core.getInput("owner");
     const number = Number(core.getInput("number"));
     const token = core.getInput("token");
@@ -16,7 +17,7 @@ const run = async () => {
     const coreExclusedStatuses = core.getInput("excluded-statuses");
     const excludedStatuses = coreExclusedStatuses ? coreExclusedStatuses.split(",") : [];
 
-    const baseUrl = process.env.GITHUB_API_URL
+    const baseUrl = apiUrlInput  || "https://api.github.com" 
     const octokit = new Octokit({
       auth: token,
       baseUrl,
