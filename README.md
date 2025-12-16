@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: blombard/move-to-next-iteration@master
+    - uses: joeito/move-to-next-iteration@master
       with:
         owner: OrgName
         number: 1
@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: blombard/move-to-next-iteration@master
+    - uses: joeito/move-to-next-iteration@master
       with:
         owner: OrgName
         number: 1
