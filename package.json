@@ -14,6 +14,6 @@
     "github-project": "github:blombard/github-project"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.38.4"
+    "@vercel/ncc": "^0.44.0"
   }
 }
