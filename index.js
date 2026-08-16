@@ -54,7 +54,7 @@ const run = async () => {
 
     const filteredItems = items.filter((item) => {
       // If item is not in the old iteration, return false.
-      if (item.fields.iteration !== iteration.title) return false;
+      if (item.fields.iteration !== iteration.id) return false;
       // If excludedStatuses are supplied, use that. Otherwise, use statuses.
       if (excludedStatuses?.length) {
         // Move item only if its status _is not_ in the excluded statuses list.
@@ -66,7 +66,7 @@ const run = async () => {
     });
 
     await Promise.all(
-      filteredItems.map((item) => ghProject.items.update(item.id, { iteration: newIteration.title }))
+      filteredItems.map((item) => ghProject.items.update(item.id, { iteration: newIteration.id }))
     );
   } catch (error) {
     core.setFailed(error);
