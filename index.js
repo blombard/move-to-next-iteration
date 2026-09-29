@@ -9,6 +9,20 @@ const run = async () => {
     const iterationField = core.getInput("iteration-field"); // name of the iteration field
     const iterationType = core.getInput("iteration"); // last or current
     const newiterationType = core.getInput("new-iteration"); // current or next
+
+    if (!/^[\w -]+$/.test(iterationField)) {
+      core.setFailed(`Invalid iteration-field value: ${iterationField}`);
+      return;
+    }
+    if (!["last", "current"].includes(iterationType)) {
+      core.setFailed(`Invalid iteration value: ${iterationType}. Must be "last" or "current".`);
+      return;
+    }
+    if (!["current", "next"].includes(newiterationType)) {
+      core.setFailed(`Invalid new-iteration value: ${newiterationType}. Must be "current" or "next".`);
+      return;
+    }
+
     const statuses = core.getInput("statuses").split(",");
     const coreExclusedStatuses = core.getInput("excluded-statuses");
     const excludedStatuses = coreExclusedStatuses ? coreExclusedStatuses.split(",") : [];
